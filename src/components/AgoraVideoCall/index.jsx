@@ -89,7 +89,7 @@ class AgoraCanvas extends React.Component {
 
     return (
         <div style={{display:'flex',flex: 1,flexDirection:'row',height:'100%'}}>
-          <div id="remote-video" style={{height:'100%', width:'200px',overflow: 'auto'}}/>
+          <div id="remote-video" style={{height:'100%', width:'200px',overflow: 'auto',transform: 'rotateY(180deg)'}}/>
           <div id="ag-local" style={{height:'100%', width:'calc(100% - 400px)'}}/>
           <div style={{display:'flex', flex:'1', flexDirection:'column', width:'200px', height:'100%'}}>
             <div id="chat-div" style={{flexGrow: 1,overflow: 'auto'}}/>

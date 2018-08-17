@@ -106,3 +106,7 @@
 .ag-btn.off.audioControlBtn .ag-icon-mic-off {
   display: inline-block;
 }
+
+video {
+  object-fit: cover;
+}
