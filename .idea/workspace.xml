@@ -1,14 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="439cd38b-2120-4318-b399-b474476cabae" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/AgoraVideoCall/index.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/AgoraVideoCall/index.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/AgoraVideoCall/individualChatMessage.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/AgoraVideoCall/individualChatMessage.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/AgoraVideoCall/individualUserOnline.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/AgoraVideoCall/individualUserOnline.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/yarn.lock" afterDir="false" />
-    </list>
+    <list default="true" id="439cd38b-2120-4318-b399-b474476cabae" name="Default" comment="" />
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
     <ignored path="$PROJECT_DIR$/tmp/" />
@@ -96,8 +89,8 @@
       <file leaf-file-name="index.jsx" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/pages/index/index.jsx">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="568">
-              <caret line="96" column="25" lean-forward="true" selection-start-line="96" selection-start-column="25" selection-end-line="96" selection-end-column="25" />
+            <state relative-caret-position="397">
+              <caret line="87" column="12" lean-forward="true" selection-start-line="87" selection-start-column="12" selection-end-line="87" selection-end-column="12" />
               <folding>
                 <element signature="e#0#25#0" expanded="true" />
               </folding>
@@ -342,12 +335,12 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1534478403008</updated>
-      <workItem from="1534478405505" duration="34971000" />
+      <workItem from="1534478405505" duration="36281000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="34971000" />
+    <option name="totallyTimeSpent" value="36281000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-213" y="-1058" width="1920" height="1058" extended-state="6" />
@@ -360,7 +353,7 @@
       <window_info id="npm" side_tool="true" />
       <window_info anchor="bottom" id="Terminal" weight="0.33769062" />
       <window_info anchor="bottom" id="RNConsole" />
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.13164824" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.13164824" />
       <window_info anchor="bottom" id="Docker" show_stripe_button="false" />
       <window_info anchor="bottom" id="Find" order="1" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -511,8 +504,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/pages/index/index.jsx">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="568">
-          <caret line="96" column="25" lean-forward="true" selection-start-line="96" selection-start-column="25" selection-end-line="96" selection-end-column="25" />
+        <state relative-caret-position="397">
+          <caret line="87" column="12" lean-forward="true" selection-start-line="87" selection-start-column="12" selection-end-line="87" selection-end-column="12" />
           <folding>
             <element signature="e#0#25#0" expanded="true" />
           </folding>
