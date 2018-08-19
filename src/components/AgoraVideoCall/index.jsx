@@ -1,11 +1,14 @@
 import React from 'react'
-import { merge } from 'lodash'
+//import { merge } from 'lodash'
+import _ from 'lodash';
 import $ from 'jquery';
 
 import './canvas.css'
 import '../../assets/fonts/css/icons.css'
 import IndividualChatMessage from "./individualChatMessage";
 import IndividualUserOnline from "./individualUserOnline";
+
+const moment = require('moment');
 /**
  * @prop appId uid
  * @prop transcode attendeeMode videoProfile channel baseMode
@@ -17,9 +20,13 @@ class AgoraCanvas extends React.Component {
     super(props);
     this.client = {};
     this.localStream = {};
+    this.userOnlineTime = [];
     this.state = {
       streamList: [],
-      readyState: false
+      readyState: false,
+      userChatMsg: [],
+      userOnlineTime: [],
+      refreshSocketData: false
     }
   }
 
@@ -46,9 +53,30 @@ class AgoraCanvas extends React.Component {
   }
 
   componentDidMount() {
+    const self = this;
       this.props.socket.on('userOnline', function(data){
+        const userOnlineType = data.split('-')[2];
+        // 远程用户
+        if(parseInt(userOnlineType) === 0){
+          const userName = data.split('-')[0];
+          const userTicker = data.split('-')[1];
+            self.userOnlineTime = _.concat(
+                _.filter(self.userOnlineTime, s => s.userName !== userName),
+                { userName, userTicker: parseInt(userTicker) }
+            );
+            //this.userOnlineTime.so
+            self.userOnlineTime = _.sortBy(self.userOnlineTime, function(o) { return o.userName; });
+
+            self.setState({
+                userOnlineTime: self.userOnlineTime
+            });
+        }
       });
       this.props.socket.on('userChat', function(data) {
+          self.state.userChatMsg.push(data);
+          self.setState({
+              refreshSocketData: !self.state.refreshSocketData
+          })
       });
   }
 
@@ -85,6 +113,29 @@ class AgoraCanvas extends React.Component {
     })
   }
 
+    formatSecondsAsTime(secs, format) {
+        let hr  = Math.floor(secs / 3600);
+        let min = Math.floor((secs - (hr * 3600)) / 60);
+        let sec = Math.floor(secs - (hr * 3600) - (min * 60));
+
+        if (hr < 10)   { hr    = "0" + hr; }
+        if (min < 10) { min = "0" + min; }
+        if (sec < 10)  { sec  = "0" + sec; }
+        if (hr)            { hr   = "00"; }
+
+        if (format != null) {
+            let formatted_time = format.replace('hh', hr);
+            formatted_time = formatted_time.replace('h', hr+""); // check for single hour formatting
+            formatted_time = formatted_time.replace('mm', min);
+            formatted_time = formatted_time.replace('m', min+""); // check for single minute formatting
+            formatted_time = formatted_time.replace('ss', sec);
+            formatted_time = formatted_time.replace('s', sec+""); // check for single second formatting
+            return formatted_time;
+        } else {
+            return hr + ':' + min + ':' + sec;
+        }
+    }
+
   render() {
 
     return (
@@ -93,22 +144,21 @@ class AgoraCanvas extends React.Component {
           <div id="ag-local" style={{height:'100%', width:'calc(100% - 400px)'}}/>
           <div style={{display:'flex', flex:'1', flexDirection:'column', width:'200px', height:'100%',overflow: 'auto'}}>
             <div id="chat-div" style={{overflow: 'auto', paddingTop: '10px', height: '50%'}}>
-                <IndividualChatMessage
-                  userName={"金鑫"}
-                  postTime={"00:00:00"}
-                  chatMsg={"这是我的发言"}
+                {this.state.userChatMsg.map((chat) => (
+                    <IndividualChatMessage
+                      userName={chat.split(':')[0]}
+                      postTime={moment().format('MM-DD HH:mm')}
+                      chatMsg={chat.split(':')[1]}
                 />
-                <IndividualChatMessage
-                    userName={"金鑫"}
-                    postTime={"00:00:00"}
-                    chatMsg={"这是我的发言"}
-                />
+                ))}
             </div>
             <div id="userOnline-div" style={{overflow: 'auto', paddingTop: '10px', height: '50%'}}>
-                <IndividualUserOnline
-                    userName={"金鑫"}
-                    userOnline={"在线时长: 00:00:00"}
-                />
+                {this.state.userOnlineTime.map((online) => (
+                    <IndividualUserOnline
+                        userName={online.userName}
+                        userOnline={this.formatSecondsAsTime(online.userTicker)}
+                    />
+                ))}
             </div>
           </div>
         </div>
@@ -136,7 +186,7 @@ class AgoraCanvas extends React.Component {
         break;
     }
 
-    let stream = AgoraRTC.createStream(merge(defaultConfig, config));
+    let stream = AgoraRTC.createStream(_.merge(defaultConfig, config));
     stream.setVideoProfile(videoProfile);
     return stream
   };

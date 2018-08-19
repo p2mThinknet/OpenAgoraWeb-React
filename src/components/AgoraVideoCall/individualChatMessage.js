@@ -16,9 +16,9 @@ class IndividualChatMessage extends React.Component {
                     <Avatar color={Avatar.getRandomColor('sitebase', ['red', 'green', 'blue'])} name={userName} size="40" round={true} />
                 </div>
                 <div style={{display: 'flex', flexDirection: 'column',paddingLeft:'10px'}}>
-                    <div style={{display: 'flex', flexDirection:'row', justifyContent: 'space-between'}}>
+                    <div style={{display: 'flex', flexDirection:'row'}}>
                         <div>{userName}</div>
-                        <div>{postTime}</div>
+                        <div style={{justifyContent: 'flex-end'}}>{postTime}</div>
                     </div>
                     <div>
                         <p>{chatMsg}</p>
