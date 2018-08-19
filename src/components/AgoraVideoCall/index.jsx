@@ -4,6 +4,8 @@ import $ from 'jquery';
 
 import './canvas.css'
 import '../../assets/fonts/css/icons.css'
+import IndividualChatMessage from "./individualChatMessage";
+import IndividualUserOnline from "./individualUserOnline";
 /**
  * @prop appId uid
  * @prop transcode attendeeMode videoProfile channel baseMode
@@ -27,7 +29,7 @@ class AgoraCanvas extends React.Component {
     this.client = AgoraRTC.createClient({ mode: $$.transcode });
     this.client.init($$.appId, () => {
       console.log("AgoraRTC client initialized");
-      this.subscribeStreamEvents()
+      this.subscribeStreamEvents();
       this.client.join($$.appId, $$.channel, $$.uid, (uid) => {
         console.log("User " + uid + " join channel successfully");
         console.log('At ' + new Date().toLocaleTimeString());
@@ -89,9 +91,25 @@ class AgoraCanvas extends React.Component {
         <div style={{display:'flex',flex: 1,flexDirection:'row',height:'100%'}}>
           <div id="remote-video" style={{height:'100%', width:'200px',overflow: 'auto',transform: 'rotateY(180deg)'}}/>
           <div id="ag-local" style={{height:'100%', width:'calc(100% - 400px)'}}/>
-          <div style={{display:'flex', flex:'1', flexDirection:'column', width:'200px', height:'100%'}}>
-            <div id="chat-div" style={{flexGrow: 1,overflow: 'auto'}}/>
-            <div id="userOnline-div" style={{flexGrow: 1,overflow: 'auto'}}/>
+          <div style={{display:'flex', flex:'1', flexDirection:'column', width:'200px', height:'100%',overflow: 'auto'}}>
+            <div id="chat-div" style={{overflow: 'auto', paddingTop: '10px', height: '50%'}}>
+                <IndividualChatMessage
+                  userName={"金鑫"}
+                  postTime={"00:00:00"}
+                  chatMsg={"这是我的发言"}
+                />
+                <IndividualChatMessage
+                    userName={"金鑫"}
+                    postTime={"00:00:00"}
+                    chatMsg={"这是我的发言"}
+                />
+            </div>
+            <div id="userOnline-div" style={{overflow: 'auto', paddingTop: '10px', height: '50%'}}>
+                <IndividualUserOnline
+                    userName={"金鑫"}
+                    userOnline={"在线时长: 00:00:00"}
+                />
+            </div>
           </div>
         </div>
     )
@@ -107,11 +125,11 @@ class AgoraCanvas extends React.Component {
 
     switch (attendeeMode) {
       case 'audio-only':
-        defaultConfig.video = false
+        defaultConfig.video = false;
         break;
       case 'audience':
-        defaultConfig.video = false
-        defaultConfig.audio = false
+        defaultConfig.video = false;
+        defaultConfig.audio = false;
         break;
       default:
       case 'video':
@@ -121,7 +139,7 @@ class AgoraCanvas extends React.Component {
     let stream = AgoraRTC.createStream(merge(defaultConfig, config));
     stream.setVideoProfile(videoProfile);
     return stream
-  }
+  };
 
   subscribeStreamEvents = () => {
     let rt = this;
@@ -133,14 +151,14 @@ class AgoraCanvas extends React.Component {
       rt.client.subscribe(stream, function (err) {
         console.log("Subscribe stream failed", err)
       })
-    })
+    });
 
     rt.client.on('peer-leave', function (evt) {
-      console.log("Peer has left: " + evt.uid)
-      console.log(new Date().toLocaleTimeString())
-      console.log(evt)
-      rt.removeStream(evt.uid)
-    })
+      console.log("Peer has left: " + evt.uid);
+      console.log(new Date().toLocaleTimeString());
+      console.log(evt);
+      rt.removeStream(evt.uid);
+    });
 
     rt.client.on('stream-subscribed', function (evt) {
       let stream = evt.stream;
@@ -153,35 +171,35 @@ class AgoraCanvas extends React.Component {
 
     rt.client.on("stream-removed", function (evt) {
       let stream = evt.stream;
-      console.log("Stream removed: " + stream.getId())
-      console.log(new Date().toLocaleTimeString())
-      console.log(evt)
-      rt.removeStream(stream.getId())
+      console.log("Stream removed: " + stream.getId());
+      console.log(new Date().toLocaleTimeString());
+      console.log(evt);
+      rt.removeStream(stream.getId());
     })
-  }
+  };
 
   removeStream = (uid) => {
     this.state.streamList.map((item, index) => {
       if (item.getId() === uid) {
-        item.close()
-        let element = document.querySelector('#ag-item-' + uid)
+        item.close();
+        let element = document.querySelector('#ag-item-' + uid);
         if (element) {
           element.parentNode.removeChild(element)
         }
-        let tempList = [...this.state.streamList]
-        tempList.splice(index, 1)
+        let tempList = [...this.state.streamList];
+        tempList.splice(index, 1);
         this.setState({
           streamList: tempList
         })
       }
 
     })
-  }
+  };
 
   addStream = (stream, push = false) => {
     let repeatition = this.state.streamList.some(item => {
       return item.getId() === stream.getId()
-    })
+    });
     if (repeatition) {
       return
     }
