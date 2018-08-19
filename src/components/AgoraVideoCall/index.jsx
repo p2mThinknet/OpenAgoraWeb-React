@@ -1,5 +1,6 @@
 import React from 'react'
 import { merge } from 'lodash'
+import $ from 'jquery';
 
 import './canvas.css'
 import '../../assets/fonts/css/icons.css'
@@ -9,6 +10,7 @@ import '../../assets/fonts/css/icons.css'
  * @prop socket-client
  */
 class AgoraCanvas extends React.Component {
+
   constructor(props) {
     super(props);
     this.client = {};
@@ -20,16 +22,16 @@ class AgoraCanvas extends React.Component {
   }
 
   componentWillMount() {
-    let $ = this.props;
+    let $$ = this.props;
     // init AgoraRTC local client
-    this.client = AgoraRTC.createClient({ mode: $.transcode });
-    this.client.init($.appId, () => {
+    this.client = AgoraRTC.createClient({ mode: $$.transcode });
+    this.client.init($$.appId, () => {
       console.log("AgoraRTC client initialized");
       this.subscribeStreamEvents()
-      this.client.join($.appId, $.channel, $.uid, (uid) => {
+      this.client.join($$.appId, $$.channel, $$.uid, (uid) => {
         console.log("User " + uid + " join channel successfully");
         console.log('At ' + new Date().toLocaleTimeString());
-        this.localStream = this.streamInit(uid, $.attendeeMode, $.videoProfile);
+        this.localStream = this.streamInit(uid, $$.attendeeMode, $$.videoProfile);
         this.localStream.init(() => {
           this.setState({ readyState: true })
         },
@@ -64,12 +66,8 @@ class AgoraCanvas extends React.Component {
                 item.play('ag-local');
               }
               document.getElementById('ag-item-' + id).onclick = function() {
-                if(document.getElementsByTagName('video').length > 1) {
-                    document.getElementsByTagName('video')[1].parentElement.remove();
-                    item.play('ag-local');
-                } else {
-                    item.play('ag-local');
-                }
+                  $($('#ag-local video')[0]).parent().remove();
+                  item.play('ag-local');
               };
           }
       });

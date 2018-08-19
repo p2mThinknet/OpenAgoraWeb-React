@@ -30,13 +30,13 @@ img {
   /* flex-basis: 70px; */
   width: 100%;
   opacity: .8;
-  height: 70px;
+  height: 30px;
   color: #FFF;
 }
 
 .ag-main {
   width: 100%;
-  height: calc(100% - 140px);
+  height: calc(100% - 50px);
   display: flex;
   flex-flow: column;
   justify-content: center;
