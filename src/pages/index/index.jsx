@@ -3,11 +3,14 @@ import * as Cookies from 'js-cookie'
 
 import '../../assets/fonts/css/icons.css'
 import './index.css'
+import UserLoginInfo from "./userLoginInfo";
 
+const moment = require('moment');
 
 class Index extends React.Component {
   constructor(props) {
-    super(props)
+    super(props);
+    this.userSigninList = [];
     this.state = {
       joinBtn: true,
       channel: 'p2m13456',
@@ -15,18 +18,32 @@ class Index extends React.Component {
       transcode: 'interop',
       attendeeMode: 'audience',//video-only, audio-only, audience
       videoProfile: '480p_4',
+      signinBtn: false,
+      userSigninList: []
     }
   };
 
   componentDidMount() {
       const self = this;
+      this.props.socket.on('startSignin', function(data) {
+        self.setState({
+            signinBtn: true
+        })
+      });
+
       this.props.socket.on('startConference', function(data) {
         self.handleJoin();
       });
 
       this.props.socket.on('loginInfo', function(data) {
-
+          if(self.userSigninList.indexOf(data) === -1) {
+              self.userSigninList.push(data);
+              self.setState({
+                  userSigninList: self.userSigninList
+              });
+          }
       });
+      self.handleJoin();
   };
 
   handleJoin = () => {
@@ -49,57 +66,22 @@ class Index extends React.Component {
         <div className="ag-main">
           <section className="login-wrapper">
             <div className="login-header">
-              <img src={require('../../assets/images/ag-logo.png')} alt="" />
-              <p className="login-title">皮图麦视频会议系统</p>
-            </div>
-            <div className="login-body">
-              <div className="columns">
-                <div className="column is-12">
-                  <InputChannel/>
-                </div>
-              </div>
-            </div>
-            <div className="login-footer">
-              <a id="joinBtn"
-                onClick={this.handleJoin}
-                disabled={!this.state.joinBtn}
-                className="ag-rounded button is-info">Join
-                  </a>
+                {this.state.signinBtn ? <p style={{fontSize: 24}}>请扫码签到</p> : <p style={{fontSize: 24}}>皮图麦视频会议系统</p>}
+                {this.state.signinBtn ? <img src={require('../../assets/images/barcode.png')} alt="" /> : <img src={require('../../assets/images/ag-logo.png')} alt="" />}
             </div>
           </section>
         </div>
-        <div className="ag-footer">
-            <span>Powered By P2M</span>
-        </div>
+          {this.state.signinBtn ? <div style={{position:'absolute', width: '200px', height: '100%', right:0, backgroundColor:'rgba(120, 120, 120, 0.4)', paddingTop: '10px',paddingLeft: '5px', paddingRight: '5px'}}>
+                  {this.state.userSigninList.map((loginInfo) => (
+                      <UserLoginInfo
+                          userName={loginInfo.split(':')[0]}
+                          loginTime={moment().format('MM-DD HH:mm')}
+                          loginType={loginInfo.split(':')[1]}
+                      />
+                  ))}
+          </div> : <div/>}
       </div>
     );
-  }
-}
-
-class InputChannel extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      errorMsg: '',
-      state: ''
-    }
-  };
-
-  render() {
-    return (
-      <div className="channel-wrapper control has-icons-left">
-        <input
-          id="channel"
-          className={'ag-rounded input ' + this.state.state}
-          type="text"
-          placeholder={this.props.placeholder}
-          value={'p2m13456'}
-        disabled={true}/>
-        <span className="icon is-small is-left">
-          <img src={require('../../assets/images/ag-login.png')} alt="" />
-        </span>
-      </div>
-    )
   }
 }
 

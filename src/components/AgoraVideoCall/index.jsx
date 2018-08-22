@@ -26,7 +26,9 @@ class AgoraCanvas extends React.Component {
       readyState: false,
       userChatMsg: [],
       userOnlineTime: [],
-      refreshSocketData: false
+      refreshSocketData: false,
+      userChatTemp: '',
+      finalChatResult: false,
     }
   }
 
@@ -55,11 +57,9 @@ class AgoraCanvas extends React.Component {
   componentDidMount() {
     const self = this;
       this.props.socket.on('userOnline', function(data){
-        const userOnlineType = data.split('-')[2];
-        // 远程用户
-        if(parseInt(userOnlineType) === 0){
-          const userName = data.split('-')[0];
-          const userTicker = data.split('-')[1];
+        //if(parseInt(userOnlineType) === 0){
+          const userName = data.split(':')[0];
+          const userTicker = data.split(':')[1];
             self.userOnlineTime = _.concat(
                 _.filter(self.userOnlineTime, s => s.userName !== userName),
                 { userName, userTicker: parseInt(userTicker) }
@@ -70,13 +70,37 @@ class AgoraCanvas extends React.Component {
             self.setState({
                 userOnlineTime: self.userOnlineTime
             });
-        }
+        //}
+      });
+      this.props.socket.on('userChatTemp', function(data) {
+          // self.state.userChatMsg.push(data);
+          // self.setState({
+          //     refreshSocketData: !self.state.refreshSocketData
+          // })
+          self.setState({
+              userChatTemp: data,
+              finalChatResult: false
+          });
+          self.listElement.scrollTop = self.listElement.scrollHeight;
       });
       this.props.socket.on('userChat', function(data) {
           self.state.userChatMsg.push(data);
           self.setState({
-              refreshSocketData: !self.state.refreshSocketData
-          })
+              refreshSocketData: !self.state.refreshSocketData,
+              finalChatResult: true
+          });
+          self.listElement.scrollTop = self.listElement.scrollHeight;
+      });
+      this.props.socket.on('stopConference', function(data) {
+          self.client && self.client.unpublish(self.localStream);
+          self.localStream && self.localStream.close();
+          self.client && self.client.leave(() => {
+              console.log('Client succeed to leave.');
+          }, () => {
+              console.log('Client failed to leave.');
+          });
+          // 返回主屏幕
+          window.location.hash = "/";
       });
   }
 
@@ -137,13 +161,12 @@ class AgoraCanvas extends React.Component {
     }
 
   render() {
-
     return (
         <div style={{display:'flex',flex: 1,flexDirection:'row',height:'100%'}}>
           <div id="remote-video" style={{height:'100%', width:'200px',overflow: 'auto',transform: 'rotateY(180deg)'}}/>
           <div id="ag-local" style={{height:'100%', width:'calc(100% - 400px)'}}/>
           <div style={{display:'flex', flex:'1', flexDirection:'column', width:'200px', height:'100%',overflow: 'auto'}}>
-            <div id="chat-div" style={{overflow: 'auto', paddingTop: '10px', height: '50%'}}>
+            <div id="chat-div" style={{overflow: 'auto', paddingTop: '10px', height: '50%'}} ref={(list) => this.listElement = list}>
                 {this.state.userChatMsg.map((chat) => (
                     <IndividualChatMessage
                       userName={chat.split(':')[0]}
@@ -151,6 +174,7 @@ class AgoraCanvas extends React.Component {
                       chatMsg={chat.split(':')[1]}
                 />
                 ))}
+                {this.state.finalChatResult ? <div/> : <div style={{color: 'white'}}>{this.state.userChatTemp}</div>}
             </div>
             <div id="userOnline-div" style={{overflow: 'auto', paddingTop: '10px', height: '50%'}}>
                 {this.state.userOnlineTime.map((online) => (

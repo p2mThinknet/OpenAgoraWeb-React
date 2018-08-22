@@ -11,7 +11,7 @@ class IndividualChatMessage extends React.Component {
         const postTime = this.props.postTime;
         const chatMsg = this.props.chatMsg;
         return (
-            <div style={{display:'flex', paddingBottom: '10px', flexDirection: 'row',color:'white'}}>
+            <div className="cccc" style={{display:'flex', paddingBottom: '10px', flexDirection: 'row',color:'white'}}>
                 <div>
                     <Avatar color={Avatar.getRandomColor('sitebase', ['red', 'green', 'blue'])} name={userName} size="40" round={true} />
                 </div>
