@@ -26,7 +26,7 @@ class Meeting extends React.Component {
       <div className="wrapper meeting">
         <div className="ag-header">
           <div className="ag-header-msg">
-            会议名称:&nbsp;<span id="room-name">{this.channel}</span>
+            会议名称:<span id="room-name">{this.channel}</span>
           </div>
         </div>
         <div className="ag-main">

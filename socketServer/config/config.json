@@ -1,0 +1,23 @@
+{
+  "development": {
+    "username": "thinknet",
+    "password": "p2m13456",
+    "database": "video_conference_dev",
+    "host": "localhost",
+    "dialect": "mysql"
+  },
+  "test": {
+    "username": "thinknet",
+    "password": "p2m13456",
+    "database": "video_conference_test",
+    "host": "localhost",
+    "dialect": "mysql"
+  },
+  "production": {
+    "username": "thinknet",
+    "password": "p2m13456",
+    "database": "video_conference_prod",
+    "host": "localhost",
+    "dialect": "mysql"
+  }
+}

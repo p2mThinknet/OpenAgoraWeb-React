@@ -10,7 +10,7 @@ import Meeting from './meeting'
 class App extends Component {
     constructor(props) {
         super(props);
-        this.socket = SocketIOClient('http://192.168.1.192:3001');
+        this.socket = SocketIOClient('http://localhost:3001');
     };
   render() {
     return (

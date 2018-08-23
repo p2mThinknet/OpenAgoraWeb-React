@@ -3,6 +3,9 @@
 # dependencies
 /node_modules
 
+/socketServer/node_modules
+/WebServer/node_modules
+
 # testing
 /coverage
 

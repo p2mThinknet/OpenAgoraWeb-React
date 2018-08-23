@@ -1,0 +1,29 @@
+{
+  "name": "videoConference",
+  "version": "0.0.1",
+  "description": "video conference demo",
+  "license": "UNLICENSED",
+  "author": "firegnu <firegnu@gmail.com>",
+  "main": "server.js",
+  "scripts": {
+    "setup": "(yarn sequelize db:create || echo yes) && yarn sequelize db:migrate && yarn sequelize db:seed:all",
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "baidu-aip-sdk": "^2.3.1",
+    "body-parser": "^1.18.3",
+    "ejs": "^2.6.1",
+    "express": "^4.16.3",
+    "lodash": "^4.17.10",
+    "moment": "^2.22.2",
+    "mysql2": "^1.5.3",
+    "path": "^0.12.7",
+    "sequelize": "^4.38.0",
+    "socket.io": "^2.1.1",
+    "ws": "^5.2.0"
+  },
+  "devDependencies": {
+    "nodemon": "^1.18.3",
+    "sequelize-cli": "^4.1.0"
+  }
+}

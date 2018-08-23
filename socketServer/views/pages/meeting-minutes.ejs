@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>会议纪要</title>
+    <link rel="stylesheet" href="/public/meeting-minutes.css">
+  </head>
+  <body>
+    <div class="root">
+      <% records.forEach(function(r) { %>
+      <div class="record">
+        <span class="username"><%= r.username %></span>
+        <span class="time"><%= r.time %></span>
+        <span class="message"><%= r.message %></span>
+      </div>
+      <% }); %>
+    </div>
+  </body>
+</html>
